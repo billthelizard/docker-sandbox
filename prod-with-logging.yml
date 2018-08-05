@@ -51,6 +51,7 @@ elasticsearch:
   image: elasticsearch:2.4.6
   environment:
     LOGSPOUT: ignore
+  log_driver: json-file
 
 kibana:
   image: kibana:4
