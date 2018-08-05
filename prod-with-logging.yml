@@ -18,6 +18,9 @@ identidock:
     - redis
   environment:
     ENV: PROD
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 dnmonster:
   image: amouat/dnmonster:1.0
