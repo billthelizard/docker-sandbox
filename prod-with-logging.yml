@@ -62,3 +62,4 @@ kibana:
     - elasticsearch
   ports:
     - "5601:5601"
+  log_driver: json-file
