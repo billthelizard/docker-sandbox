@@ -7,6 +7,9 @@ proxy:
   environment:
     - NGINX_HOST=(your host's ip address)
     - NGINX_PROXY=http://identidock:9090
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 identidock:
   image: amouat/identidock:1.0
