@@ -7,6 +7,9 @@ proxy:
   environment:
     - NGINX_HOST=(your host's ip address)
     - NGINX_PROXY=http://identidock:9090
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 identidock:
   image: amouat/identidock:1.0
@@ -15,22 +18,21 @@ identidock:
     - redis
   environment:
     ENV: PROD
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 dnmonster:
   image: amouat/dnmonster:1.0
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 redis:
   image: redis:4.0
-
-logspout:
-  image: amouat/logspout-logstash
-  volumes:
-    - /var/run/docker.sock:/tmp/docker.sock
-  ports:
-    - "8000:80"
-  links:
-    - logstash
-  command: logstash://logstash:5000
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 logstash:
   image: logstash:2.4.1
@@ -40,12 +42,16 @@ logstash:
     LOGSPOUT: ignore
   links:
     - elasticsearch
+  ports:
+    - "127.0.0.1:5544:5544"
   command: -f /etc/logstash.conf
+  log_driver: json-file
 
 elasticsearch:
   image: elasticsearch:2.4.6
   environment:
     LOGSPOUT: ignore
+  log_driver: json-file
 
 kibana:
   image: kibana:4
@@ -56,3 +62,4 @@ kibana:
     - elasticsearch
   ports:
     - "5601:5601"
+  log_driver: json-file
