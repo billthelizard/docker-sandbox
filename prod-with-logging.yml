@@ -30,6 +30,9 @@ dnmonster:
 
 redis:
   image: redis:4.0
+  log_driver: syslog
+  log_opt:
+    tag: docker/{{.ImageName}}/{{.Name}}/{{.ID}}
 
 logstash:
   image: logstash:2.4.1
